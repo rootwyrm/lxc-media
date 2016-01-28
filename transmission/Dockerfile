@@ -56,9 +56,10 @@ ADD application/settings.json /config/
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
-RUN mkdir -p /opt/lxc
-ADD application/user.cleanup /opt/lxc/user.cleanup
-RUN /opt/lxc/user.cleanup
+RUN mkdir -p /opt/rootwyrm
+ADD README.md /README.md
+ADD application/user.cleanup /opt/rootwyrm/user.cleanup
+RUN /opt/rootwyrm/user.cleanup ; rm /opt/rootwyrm/user.cleanup
 
 ## TERMINUS
 CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
