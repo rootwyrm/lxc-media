@@ -40,15 +40,17 @@ RUN apk update ; apk upgrade ; apk add --no-cache $pkg_common
 ## Application and support installation
 #ENV pkg_application="openssl unrar p7zip git py-virtualenv py-cffi py-openssl gcc aclocal automake autoconf"
 #### par2cmdline, unrar, unzip
+#### XXX: Must sleep 5 for docker autobuild to not lock-race
 ADD	application/lbuild.par2.sh /root/
-RUN chmod +x /root/lbuild.par2.sh && \
+RUN chmod +x /root/lbuild.par2.sh && sleep 5; \
 	/root/lbuild.par2.sh
 RUN apk add --no-cache p7zip unrar
 #### python base and pip
 RUN apk add --no-cache --virtual vp_python_base python 
 ADD	application/sitecustomize.py /usr/lib/python2.7/site-packages/sitecustomize.py
 ADD application/lbuild.pyenv.sh /root/
-RUN	chmod +x /root/lbuild.pyenv.sh && \
+#### XXX: Must sleep 5 for docker autobuild to not lock-race
+RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
 	/root/lbuild.pyenv.sh
 RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D $lxcuser 
 
