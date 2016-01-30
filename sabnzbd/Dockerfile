@@ -19,8 +19,8 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.depends="" \
         com.rootwyrm.rootcore.provides="transmission" \
         com.rootwyrm.rootcore.svctype="torrent" \
-        com.rootwyrm.rootcore.ports_tcp="9091" \
-        com.rootwyrm.rootcore.ports_udp="9091 51413" \
+        com.rootwyrm.rootcore.ports_tcp="8080 8081" \
+        com.rootwyrm.rootcore.ports_udp="" \
         com.rootwyrm.rootcore.qnap_compatible="true" \
         com.rootwyrm.rootcore.synology_compatible="true"
 
@@ -28,7 +28,8 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
 
 ## PHASE ZERO
 ## Global container variables
-EXPOSE  8080/tcp 
+EXPOSE  8080/tcp
+EXPOSE	8081/tcp
 ENV 	lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
 
 ## PHASE ONE
