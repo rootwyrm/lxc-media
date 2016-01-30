@@ -43,7 +43,8 @@ RUN apk add --no-cache $pkg_application
 ADD application/supervisord.conf /etc/supervisord.conf
 ADD application/*.ini /etc/supervisor.d/
 ENV lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
-RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D $lxcuser && \
+#### XXX: Must define shell - gliderlabs/docker-alpine/issues/141
+RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser && \
 	mkdir /config && mkdir /downloads && \
 	chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
 	mkdir /var/log/supervisor 

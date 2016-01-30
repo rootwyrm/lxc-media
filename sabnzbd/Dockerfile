@@ -52,7 +52,8 @@ ADD application/lbuild.pyenv.sh /root/
 #### XXX: Must sleep 5 for docker autobuild to not lock-race
 RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
 	/root/lbuild.pyenv.sh
-RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D $lxcuser 
+#### XXX: Must define shell - gliderlabs/docker-alpine/issues/141
+RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser 
 
 ## PHASE THREE
 ## Configuration
