@@ -9,7 +9,7 @@ Designed to quickly deploy an entire media hub using Docker Composer and Docker 
 * [SickRage] (spare me the politics, people)
 * [CouchPotato]
 * [Headphones]
-* Mylar
+* [Mylar]
 * LazyLibrarian (currently tracking [DobyTang])
   * [BookStrap] included at no extra charge!
 
