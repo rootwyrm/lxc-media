@@ -6,7 +6,7 @@ Designed to quickly deploy an entire media hub using Docker Composer and Docker 
 # Components
 * Transmission
 * [sabnzbd]
-* [SickRage] (spare me the politics, people)
+* [SickRage] - (spare me the politics, people)
 * [CouchPotato]
 * [Headphones]
 * [Mylar]
