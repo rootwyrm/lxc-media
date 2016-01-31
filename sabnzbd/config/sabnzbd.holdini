@@ -4,21 +4,22 @@
 [sabnzbd]
 file = /var/run/sv_sabnzbd.sock
 chmod = 0700
-chown = lxcmedia:users
+chown = LXCUSER:LXCGROUP
 
 [program:sabnzbd]
+priority = 200
 command = /usr/bin/python /opt/sabnzbd/SABnzbd.py -s :8080 -b 0 -f /config/sabnzbd.ini
 process_name=%(program_name)s
 numprocs = 1
 umask = 022
 autostart = true
-autorestart = false		; interferes with autoupdate
+autorestart = unexpected	; interferes with autoupdate
 startsecs = 4
 startretries = 3
-exitcodes = 0,1,2
+exitcodes = 0
 stopsignal = TERM
 stopwaitsecs = 60
-user = lxcmedia
+user = LXCUSER
 redirect_stderr = true
 stdout_logfile = /var/log/supervisor/sabnzbd.log
 stdout_logfile_maxbytes = 1MB

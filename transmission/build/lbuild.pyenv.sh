@@ -1,14 +1,14 @@
 #!/bin/bash
 ## Build par2 using virtual package so we can slim it back down.
 
-buildname="pyenv_sabnzbd"
+buildname="pyenv_sickrage"
 
-vbpkg="vp_python_sabnzbd_build"
+vbpkg="vp_python_sickrage_build"
 ## NOTE: Must include ALL contents...
 vbpkg_content="musl-dev python-dev libffi-dev openssl-dev gcc"
 ## And one for only running
-vrpkg="vp_python_sabnzbd"
-vrpkg_content=""
+vrpkg="vp_python_sickrage"
+vrpkg_content="libxslt libxml2 libffi"
 
 url_pip="https://bootstrap.pypa.io/get-pip.py"
 url_yenc="https://bitbucket.org/dual75/yenc/get/default.tar.gz"
@@ -39,6 +39,11 @@ if [ ! -f /usr/lib/python2.7/site-packages/sitecustomize.py ]; then
 	exit 2
 fi
 
+## Install runtime
+echo "Installing $vrpkg"
+/sbin/apk --no-cache add --virtual $vrpkg $vrpkg_content
+check_error $vbpkg
+
 ## Bootstrap pip
 $curl_cmd $url_pip > /root/pip.py
 $pycmd /root/pip.py $pip_pre
@@ -56,38 +61,25 @@ if [ $? -ne 0 ]; then
 	exit $RC
 fi
 
-printf 'Installing Cheetah\n'
-/usr/local/bin/pip install $pip_args cheetah
-check_error cheetah
-
-printf 'Installing configobj\n'
-/usr/local/bin/pip install $pip_args configobj 
-check_error configobj
-
-printf 'Installing feedparser\n'
-/usr/local/bin/pip install $pip_args feedparser
-check_error feedparser
-
 echo "Installing $vbpkg"
 /sbin/apk --no-cache add --virtual $vbpkg $vbpkg_content
 check_error $vbpkg
 
+printf 'Installing Cheetah\n'
+/usr/local/bin/pip install $pip_args cheetah
+check_error cheetah
+
 printf 'Building and installing pyOpenSSL\n'
 /usr/local/bin/pip install $pip_args pyOpenSSL
 check_error pyOpenSSL
-
-printf 'Building and installing yenc from BitBucket\n'
-/usr/local/bin/pip install $pip_args $url_yenc
 
 echo "Cleaning up $vbpkg and preparing run test..."
 /sbin/apk --no-cache del $vbpkg
 
 echo "Verifying all modules installed..."
 pip list | awk '{print $1}' > /tmp/pip.list
-for pydep in cffi cheetah configobj cryptography enum34 feedparser \
-	idna ipaddress markdown pip pyasn1 pycparser pyOpenSSL setuptools \
-	six wheel yenc; do
-	grep -i $pydep /tmp/pip.list
+for pydep in cheetah pip pyOpenSSL setuptools ; do
+	grep -i $pydep /tmp/pip.list > /dev/null
 	if [ $? -eq 0 ]; then
 		printf '%s ' "$pydep"
 	else
@@ -97,4 +89,5 @@ for pydep in cffi cheetah configobj cryptography enum34 feedparser \
 	fi
 done
 
+echo ""
 echo "$buildname: Completed with no errors."

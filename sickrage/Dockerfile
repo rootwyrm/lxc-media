@@ -52,7 +52,7 @@ mkdir /var/log/supervisor && \
 mkdir /opt/sickrage
 
 ADD application/* /opt/rootwyrm/
-ADD application/defaults* /opt/rootwyrm/defaults/
+ADD application/defaults* /opt/rootwyrm/defaults
 
 ## PHASE THREE
 ## Configuration
