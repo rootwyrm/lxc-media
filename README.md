@@ -5,11 +5,11 @@ Designed to quickly deploy an entire media hub using Docker Composer and Docker 
 
 # Components
 * Transmission
-* sabnzbd+
-* SickRage (spare me the politics, people)
-* CouchPotato
-* Headphones
-* Mylar
+* [sabnzbd]
+* [SickRage] - (spare me the politics, people)
+* [CouchPotato]
+* [Headphones]
+* [Mylar]
 * LazyLibrarian (currently tracking [DobyTang])
   * [BookStrap] included at no extra charge!
 
@@ -21,7 +21,8 @@ Because people can't agree (or agree too much) on which ports they want to use, 
 | Container Name 	| Port Type 	| Host Port 	| Internal Port 	|
 |----------------	|-----------	|-----------	|---------------	|
 | transmission   	| http      	| 9091      	| 9091          	|
-| sabnzbd        	| http      	| 9090      	| 9090          	|
+| sabnzbd        	| http      	| 9080      	| 8080          	|
+| sabnzbd        	| https     	| 9081      	| 8081          	|
 | sickrage       	| http      	| 8080      	| 8080          	|
 | couchpotato    	| http      	| TBD       	| 5050          	|
 | headphones     	| http      	| TBD       	| TBD           	|
@@ -42,5 +43,10 @@ Alternate composer file for proxied vhosts (i.e. transmission.example.com mappin
 # Read The License!!
 **READ THE LICENSE CAREFULLY. IGNORANCE IS NOT A DEFENSE. COMMERCIAL DISTRIBUTION, REDISTRIBUTION, OR REPACKAGING WITHOUT WRITTEN CONSENT IS PROHIBITED.** While this builds on various open source licensed software, the specific contents of this repository (that means the build files, scripts, etcetera) are external tools and do not directly contribute to or modify the software they work with. I have my eye on you abusers - and you know exactly who you are. 
 
+[sabnzbd]:https://github.com/sabnzbd/sabnzbd
+[SickRage]:https://github.com/SickRage/SickRage
+[CouchPotato]:https://github.com/RuudBurger/CouchPotatoServer
+[Headphones]:https://github.com/rembo10/headphones
+[Mylar]:https://github.com/evilhero/mylar
 [DobyTang]:https://github.com/DobyTang/LazyLibrarian
 [BookStrap]:https://github.com/warlord0/lazylibrarian.bookstrap
