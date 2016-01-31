@@ -3,10 +3,10 @@ Media Hub (Docker Composer and Containers)
 
 Designed to quickly deploy an entire media hub using Docker Composer and Docker Containers. Mostly built for me. Available to the world at large (with some restrictions) because I'm a nice guy. Also because I can't be the only one with this brilliant idea - but so far I am the only one to actually *implement* it.
 
-# Components
+# Components (those in bold are complete!)
 * Transmission
-* [sabnzbd]
-* [SickRage] - (spare me the politics, people)
+* **[sabnzbd]**
+* **[SickRage]** - (spare me the politics, people)
 * [CouchPotato]
 * [Headphones]
 * [Mylar]
@@ -23,7 +23,7 @@ Because people can't agree (or agree too much) on which ports they want to use, 
 | transmission   	| http      	| 9091      	| 9091          	|
 | sabnzbd        	| http      	| 9080      	| 8080          	|
 | sabnzbd        	| https     	| 9081      	| 8081          	|
-| sickrage       	| http      	| 8080      	| 8080          	|
+| sickrage       	| http      	| 8081      	| 8081          	|
 | couchpotato    	| http      	| TBD       	| 5050          	|
 | headphones     	| http      	| TBD       	| TBD           	|
 | mylar          	| http      	| TBD       	| TBD           	|
