@@ -28,9 +28,9 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
 
 ## PHASE ZERO
 ## Global container variables
-EXPOSE	8080/tcp
-EXPOSE	8081/tcp 
 #ENV 	lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
+EXPOSE	9080/tcp
+EXPOSE	9081/tcp 
 
 ## PHASE ONE
 ## Common components
@@ -49,11 +49,10 @@ RUN	chmod +x /root/lbuild.par2.sh && sleep 5; \
 /root/lbuild.par2.sh
 RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
 /root/lbuild.pyenv.sh
-#### XXX: Must define shell - gliderlabs/docker-alpine/issues/141
-#RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser && \
 RUN	mkdir -p /opt/rootwyrm/defaults && \
 mkdir /var/log/supervisor && \
-mkdir /opt/sabnzbd
+mkdir /opt/sabnzbd && \
+git clone https://github.com/sabnzbd/sabnzbd.git -b 0.7.x --depth=1 /opt/sabnzbd && touch /deploy
 
 ADD application/* /opt/rootwyrm/
 ADD application/defaults/* /opt/rootwyrm/defaults/
@@ -65,24 +64,9 @@ ADD config/*ini /etc/supervisor.d/
 #ADD application/sickrage.ini /etc/supervisor.d/
 VOLUME [ "/config", "/downloads" ]
 
-#RUN	chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
-#	mkdir /var/log/supervisor
-#RUN	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisord.conf ; \
-#	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisor.d/*.ini ; \
-#	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisord.conf ; \
-#	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisor.d/*.ini
-#ADD application/config.ini /config/
-#RUN chown -R $lxcuid:$lxcgid /config/*
-# XXX: Missing default config
-
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
-#RUN mkdir -p /opt/rootwyrm
 ADD README.md /README.md
-
-## XXX: TEMP SKIP
-RUN git clone https://github.com/sabnzbd/sabnzbd.git -b 0.7.x --depth=1 /opt/sabnzbd && touch /deploy
 
 ## TERMINUS
 CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
-

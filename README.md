@@ -21,8 +21,8 @@ Because people can't agree (or agree too much) on which ports they want to use, 
 | Container Name 	| Port Type 	| Host Port 	| Internal Port 	|
 |----------------	|-----------	|-----------	|---------------	|
 | transmission   	| http      	| 9091      	| 9091          	|
-| sabnzbd        	| http      	| 9080      	| 8080          	|
-| sabnzbd        	| https     	| 9081      	| 8081          	|
+| sabnzbd        	| http      	| 9080      	| 9080          	|
+| sabnzbd        	| https     	| 9090      	| 9090          	|
 | sickrage       	| http      	| 8081      	| 8081          	|
 | couchpotato    	| http      	| TBD       	| 5050          	|
 | headphones     	| http      	| TBD       	| TBD           	|

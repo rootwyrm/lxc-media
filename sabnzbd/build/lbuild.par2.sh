@@ -5,7 +5,7 @@ vpkg="vp_par2cmdline_build"
 ## NOTE: Must include ALL contents...
 vpkg_build="musl musl-utils binutils binutils-libs gmp isl libgomp libatomic libgcc pkgconf pkgconfig mpfr3 mpc1 libstdc++ gcc musl-dev libc-dev g++ m4 perl automake autoconf make"
 ## And one for only running
-vpkg_run="libstdc++ libgcc"
+vpkg_run="libstdc++ libgcc openssl unrar p7zip"
 
 par2cmdline_git="https://github.com/Parchive/par2cmdline.git"
 
