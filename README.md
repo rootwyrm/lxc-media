@@ -4,13 +4,13 @@ Media Hub (Docker Composer and Containers)
 Designed to quickly deploy an entire media hub using Docker Composer and Docker Containers. Mostly built for me. Available to the world at large (with some restrictions) because I'm a nice guy. Also because I can't be the only one with this brilliant idea - but so far I am the only one to actually *implement* it.
 
 # Components (those in bold are complete!)
-* Transmission
-* **[sabnzbd]**
-* **[SickRage]** - (spare me the politics, people)
-* [CouchPotato]
-* [Headphones]
-* [Mylar]
-* LazyLibrarian (currently tracking [DobyTang])
+* **Transmission** - rootwyrm/lxc-media:transmission
+* **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd
+* **[SickRage]** - rootwyrm/lxc-media:sickrage
+* [CouchPotato] - rootwyrm/lxc-media:couchpotato
+* [Headphones] - rootwyrm/lxc-media:headphones
+* [Mylar] - rootwyrm/lxc-media:mylar
+* LazyLibrarian (currently tracking [DobyTang]) - rootwyrm/lxc-media:lazylib
   * [BookStrap] included at no extra charge!
 
 **CAUTION**: There is some magic involved to ensure containers can cross-talk. Each container is configured separately. READ THE README IN EACH CONTAINER.
@@ -29,11 +29,20 @@ Because people can't agree (or agree too much) on which ports they want to use, 
 | mylar          	| http      	| TBD       	| TBD           	|
 | lazylibrarian  	| http      	| TBD       	| TBD           	|
 
+# Volume Layout
+These containers use a common volume layout to make life easier.
+* `/config` - holds application configuration data
+* `/downloads` - where downloads land by default
+* `/shared` - general purpose shared volume area
+
 # TODO: Document host requirements
 Due to the nature of the containers, the host may require additional packages installed to support tools or containers themselves.
 
 # TODO: SSL Self-Signed Certificate auto-generation and replacing
-All containers will create a self-signed certificate on first boot at a fixed location, or on restart if the file is missing. These files can be replaced with your own certificate file set.
+All supporting containers will create a self-signed certificate on first boot at a fixed location, or on restart if the file is missing. These files can be replaced with your own certificate file set.
+
+`/config/ssl/media.crt` and `/config/ssl/media.key`
+* sabnzbd - complete
 
 # TODO: nginx/Apache vhost proxy Alternate Composer File
 Alternate composer file for proxied vhosts (i.e. transmission.example.com mapping to container port) which uses an entirely different portmap to stay better out of the way.
