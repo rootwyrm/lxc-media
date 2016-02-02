@@ -26,12 +26,10 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
 
 ## PHASE ZERO
 ## Global container variables
-EXPOSE	9091/udp 9091/tcp 43210-48210/udp
+EXPOSE	9091/udp 9091/tcp 51413-52413/udp
 
 ## PHASE ONE
 ## Common components
-#ENV pkg_common="apk-cron supervisor bash"
-#RUN apk update ; apk upgrade ; apk add --no-cache $pkg_common
 
 ## PHASE TWO
 ## Application and support installation
@@ -50,14 +48,13 @@ RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s 
 	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisord.conf ; \
 	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisor.d/*.ini
 #VOLUME [ "/config", "/downloads" ]
-ADD application/settings.json /config/
+ADD application/settings.json /opt/rootwyrm/defaults/
 	#mkdir /config && mkdir /downloads && \
 	#chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
 	#mkdir /var/log/supervisor 
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
-RUN mkdir -p /opt/rootwyrm
 ADD README.md /README.md
 
 ## TERMINUS
