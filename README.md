@@ -4,8 +4,9 @@ Media Hub (Docker Composer and Containers)
 Designed to quickly deploy an entire media hub using Docker Composer and Docker Containers. Mostly built for me. Available to the world at large (with some restrictions) because I'm a nice guy. Also because I can't be the only one with this brilliant idea - but so far I am the only one to actually *implement* it.
 
 # Components (those in bold are complete!)
-* **Transmission** - rootwyrm/lxc-media:transmission
-* **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd
+[![](https://badge.imagelayers.io/rootwyrm/lxc-media:base.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:base 'Get your own badge on imagelayers.io')
+* **Transmission** - rootwyrm/lxc-media:transmission[![](https://badge.imagelayers.io/rootwyrm/lxc-media:transmission.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:transmission 'Get your own badge on imagelayers.io')
+* **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd [![](https://badge.imagelayers.io/rootwyrm/lxc-media:sabnzbd.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:sabnzbd 'Get your own badge on imagelayers.io')
 * **[SickRage]** - rootwyrm/lxc-media:sickrage
 * [CouchPotato] - rootwyrm/lxc-media:couchpotato
 * [Headphones] - rootwyrm/lxc-media:headphones
