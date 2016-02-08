@@ -113,16 +113,22 @@ deploy_lxcmedia_ownership()
 	check_error $? chown_config
 
 	chown -R $lxcuid:$lxcgid $app_destdir
-	check_error $? chown_app_destdir
+	if [ $? -ne 0 ]; then
+		exit 1 "[FATAL] Could not adjust ownership."
+	fi
 	# Don't forget the git files...
 	chown -R $lxcuid:$lxcgid $app_destdir/.[a-z]*
-	check_error $? chown_app_destdir
+	if [ $? -ne 0 ]; then
+		echo "[FATAL] Could not chown_app_destdir."
+		exit 1
+	fi
 }
 
 ## motd
 ########################################
 generate_motd()
 {
+	baserel="R0V0U0.2016-02-05"
 	releasefile="/opt/rootwyrm/release.id"
 	if [ -s $releasefile ]; then
 		releaseid="!!! DEBUG *** DEBUG *** DEBUG !!!"
@@ -131,6 +137,7 @@ generate_motd()
 	fi
 
 	cp /opt/rootwyrm/defaults/motd /etc/motd
+	sed -e -i 's/BASERELID/'$baserel'' /etc/motd
 	sed -e -i 's/RELEASEID/'$releaseid'' /etc/motd
 	sed -e -i 's/APPNAME/'$app_name'' /etc/motd
 	sed -i -i 's/APPURL/'$app_url'' /etc/motd
