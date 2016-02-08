@@ -26,12 +26,13 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="" \
         com.rootwyrm.rootcore.synology_compatible=""
 
-ENV pkg_common="apk-cron openrc runit bash git"
+ENV pkg_common="apk-cron openrc runit bash git file"
 
 ## Create common elements
 RUN mkdir -p /opt/rootwyrm/defaults; mkdir -p /opt/rootwyrm/build; \
 mkdir -p /var/log/runit ; touch /deploy ; \
 echo "http://alpine.gliderlabs.com/alpine/edge/testing" >> /etc/apk/repositories && \
 apk add --no-cache $pkg_common
+COPY [ "application/", "/opt/rootwyrm" ]
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]

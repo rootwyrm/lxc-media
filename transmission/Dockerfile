@@ -26,29 +26,36 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
 
 ## PHASE ZERO
 ## Global container variables
-EXPOSE	9091/udp 9091/tcp 51413-52413/udp
+EXPOSE	9091/udp 9091/tcp 43454/udp
 
 ## PHASE ONE
 ## Common components
 
 ## PHASE TWO
 ## Application and support installation
-ENV pkg_application="openssl transmission-daemon"
+ENV pkg_application="openssl transmission-daemon file"
 RUN apk add --no-cache $pkg_application
 
 ## PHASE THREE
 ## Configuration
 #ADD application/supervisord.conf /etc/supervisord.conf
-ADD application/*.ini /etc/supervisor.d/
+#ADD application/*.ini /etc/supervisor.d/
 ENV lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
-#### XXX: Must define shell - gliderlabs/docker-alpine/issues/141
+#### XXX: Must define shell 
+#### -- gliderlabs/docker-alpine/issues/141
+#### -- http://bugs.alpinelinux.org/issues/5083
 RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser && \
-	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisord.conf ; \
-	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisor.d/*.ini ; \
-	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisord.conf ; \
-	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisor.d/*.ini
+	mkdir -p /etc/runit ; mkdir -p /service
 #VOLUME [ "/config", "/downloads" ]
-ADD application/settings.json /opt/rootwyrm/defaults/
+COPY [ "application/", "/opt/rootwyrm/defaults/" ]
+COPY [ "sv/", "/etc/sv/" ]
+#ADD application/settings.json /opt/rootwyrm/defaults/ 
+ADD config/rc.conf /etc/rc.conf
+#RUN chmod +x /etc/runit/* && \
+RUN sed -i -e '/^tty*/d' /etc/inittab && \
+sed -i -e '/^# Set up*/d' /etc/inittab && \
+sed -i -e '/^::ctrlalt*/d' /etc/inittab  && \
+sed -i -e '/.*salute$/d' /etc/inittab
 	#mkdir /config && mkdir /downloads && \
 	#chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
 	#mkdir /var/log/supervisor 
@@ -58,4 +65,5 @@ ADD application/settings.json /opt/rootwyrm/defaults/
 ADD README.md /README.md
 
 ## TERMINUS
-CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
+#CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
+CMD [ "/sbin/init" ]
