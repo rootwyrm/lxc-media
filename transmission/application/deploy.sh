@@ -12,14 +12,14 @@
 export app_name="transmission"
 export app_url="http://www.transmissionbt.com/"
 export app_git_url=""
-export app_destdir=""
+#export app_destdir=""
 
 export app_cmd="/usr/bin/transmission-daemon"
 export app_svname="transmission"
 export app_psname="transmission-daemon"
 
 ## Ingest library
-. /opt/rootwyrm/deploy.lib
+. /opt/rootwyrm/deploy.lib.sh
 
 ## configuration install
 ########################################
@@ -55,9 +55,36 @@ config_copybase()
 		echo "[WARNING] Not overwriting existing configuration."
 		return 0
 	fi
+
 	cp /opt/rootwyrm/defaults/settings.json $basecfg
+	if [ $? -ne 0 ]; then
+		RC=$?
+		return $rc
+	else
+		return 0
+	fi
 }
 
-## runit configuration and management
-########################################
 
+######################################################################
+## execution phase
+######################################################################
+
+ingest_environment
+test_deploy
+
+generate_motd
+cat /etc/motd
+
+echo "[DEPLOY] Deploying lxc-media user:"
+deploy_lxcmedia_user
+
+config_checkdir
+config_copybase
+
+echo "[DEPLOY] Changing ownerships for lxc-media..."
+deploy_lxcmedia_ownership
+
+runit_linksv
+
+deploy_complete

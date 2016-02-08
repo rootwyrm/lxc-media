@@ -34,5 +34,7 @@ mkdir -p /var/log/runit ; touch /deploy ; \
 echo "http://alpine.gliderlabs.com/alpine/edge/testing" >> /etc/apk/repositories && \
 apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
+COPY [ "sv/", "/etc/sv" ]
+RUN ln -s /etc/sv/firstboot /etc/service/ 
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]

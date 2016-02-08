@@ -2,4 +2,5 @@
 ## transmission.finish
 ## vers = 83bf920a131d262622091b1718ec8295
 
+echo "[STOP] transmission"
 exec /bin/kill -s SIGKILL `cat /var/run/transmission.pid`

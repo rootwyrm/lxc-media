@@ -2,9 +2,9 @@
 ## transmission.run
 ## vers = 3c6ad52b883dee536fc5624e2f5a39f5
 
-export lxcuid=$(grep "lxc-media user" /etc/passwd | cut -d : -f 3)
-export lxcgid=$(grep "lxc-media user" /etc/passwd | cut -d : -f 4)
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
 
+echo "[START] transmission as user: $lxcuid:$lxcgid"
 ## XXX: 2016-02-04: must be on single line
-exec chpst -u $lxcuid:$lxcgid /usr/bin/transmission-daemon --blocklist --foreground --portmap --watch-dir /downloads/blackhole --config-dir /config --download-dir /downloads --incomplete-dir /downloads/incomplete --pid-file /var/run/transmission.pid
-
+exec chpst -u $lxcuser:$lxcgroup /usr/bin/transmission-daemon --blocklist --foreground --portmap --watch-dir /downloads/blackhole --config-dir /config --download-dir /downloads --incomplete-dir /downloads/incomplete --pid-file /var/run/transmission.pid

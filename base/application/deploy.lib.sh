@@ -11,6 +11,7 @@
 ## NOTE: Must export due to bash limitation
 export chkfile="/deploy"
 export basedir="/opt/rootwyrm/defaults"
+export svcdir="/etc/service"
 
 ## Trap early
 test_deploy()
@@ -26,6 +27,21 @@ test_deploy()
 		fi
 	fi
 }
+
+check_error()
+{
+	if [ $1 -ne 0 ]; then
+		RC=$1
+		if [ -z $2 ]; then
+			echo "[FATAL] Error occurred in $2"
+			exit $RC
+		else
+			echo "[FATAL] Error occurred in $2 : $1"
+			exit $RC
+		fi
+	fi
+}
+
 
 ingest_environment()
 {
@@ -67,7 +83,7 @@ deploy_lxcmedia_user()
 			if [ $? -ne 0 ]; then
 				set lxcgid="100"
 				addgroup -g $lxcgid $lxcgroup
-				check_error $? addgroup
+                check_error $? addgroup
 			else
 				grep $lxcgroup /etc/group | cut -d : -f 3 > /tmp/gid
 				export lxcgid=$(cat /tmp/gid)
@@ -92,7 +108,7 @@ deploy_lxcmedia_user()
 	
 	# NOTE: NEVER use \ to make readable, base chokes on it.	
 	adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s $lxcshell $lxcuser
-	check_error $? adduser
+           check_error $? adduser
 
 	rm /tmp/gid
 }
@@ -107,20 +123,23 @@ deploy_lxcmedia_ownership()
 	fi
 	
 	chown -R $lxcuid:$lxcgid /home/$lxcuser
-	check_error $? chown_home
+           check_error $? chown_home
 	chmod 0700 /home/$lxcuser
 	chown -R $lxcuid:$lxcgid /config
-	check_error $? chown_config
-
-	chown -R $lxcuid:$lxcgid $app_destdir
-	if [ $? -ne 0 ]; then
-		exit 1 "[FATAL] Could not adjust ownership."
-	fi
-	# Don't forget the git files...
-	chown -R $lxcuid:$lxcgid $app_destdir/.[a-z]*
-	if [ $? -ne 0 ]; then
-		echo "[FATAL] Could not chown_app_destdir."
-		exit 1
+           check_error $? chown_config
+	
+	if [ ! -d $app_destdir ] ; then
+		chown -R $lxcuid:$lxcgid $app_destdir
+		if [ $? -ne 0 ]; then
+			echo "[FATAL] Could not adjust ownership."
+			exit 1
+		fi
+		# Don't forget the git files...
+		chown -R $lxcuid:$lxcgid $app_destdir/.[a-z]*
+		if [ $? -ne 0 ]; then
+			echo "[FATAL] Could not chown_app_destdir."
+			exit 1
+		fi
 	fi
 }
 
@@ -131,19 +150,22 @@ generate_motd()
 	baserel="R0V0U0.2016-02-05"
 	releasefile="/opt/rootwyrm/release.id"
 	if [ -s $releasefile ]; then
-		releaseid="!!! DEBUG *** DEBUG *** DEBUG !!!"
+		releaseid="DEBUG_DEBUG_DEBUG_DEBUG"
 	else
 		releaseid=$(cat $releasefile)
 	fi
 
 	cp /opt/rootwyrm/defaults/motd /etc/motd
-	sed -e -i 's/BASERELID/'$baserel'' /etc/motd
-	sed -e -i 's/RELEASEID/'$releaseid'' /etc/motd
-	sed -e -i 's/APPNAME/'$app_name'' /etc/motd
-	sed -i -i 's/APPURL/'$app_url'' /etc/motd
+	sed -i -e 's,BASERELID,'$baserel',' /etc/motd
+	sed -i -e 's,RELEASEID,'$releaseid',' /etc/motd
+	sed -i -e 's,APPNAME,'$app_name',' /etc/motd
+	sed -i -e 's,APPURL,'$app_url',' /etc/motd
 
 	if [ -f /opt/rootwyrm/app.message ]; then
-		sed -e -i 's/APPMESSAGE/'$(cat /opt/rootwyrm/app.message)'' /etc/motd
+		sed -i -e '/APPMESSAGE$/d' /etc/motd
+		cat /opt/rootwyrm/app.message >> /etc/motd
+	else
+		sed -i -e '/APPMESSAGE$/d' /etc/motd
 	fi
 }
 
@@ -159,7 +181,7 @@ deploy_application_git()
 				mkdir $app_destdir
 			fi
 			git clone $app_git_url -b master --depth=1 $app_destdir
-			check_error $? git_clone
+            check_error $? git_clone
 			chown -R $lxcuid:$lxcgid $app_destdir
 			return $?
 			;;
@@ -170,7 +192,10 @@ deploy_application_git()
 			else
 				export return=$PWD; cd $app_destdir
 				su $lxcuser -c 'git pull'
-				check_error $? git_pull_update
+                if [ $? -ne 0 ]; then
+                    echo "[FATAL] Error in git_pull_update"
+                    exit 1
+                fi
 			   	cd $return
 				unset return
 			fi
@@ -180,5 +205,19 @@ deploy_application_git()
 			return 1
 			;;
 	esac
+}
+
+## runit configuration and management
+########################################
+## XXX: Link into /etc/services
+runit_linksv()
+{
+	if [ -d /etc/sv/$app_svname ]; then
+		ln -s /etc/sv/$app_svname /etc/service
+		if [ $? -ne 0 ]; then
+			echo "[FATAL] Failed to install application in runit."
+			exit 1
+		fi
+	fi
 }
 

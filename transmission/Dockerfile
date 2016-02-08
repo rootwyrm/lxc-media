@@ -1,4 +1,5 @@
-FROM  rootwyrm/lxc-media:base
+FROM  base
+#FROM  rootwyrm/lxc-media:base
 ## The magic begins...
 MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 
@@ -33,7 +34,7 @@ EXPOSE	9091/udp 9091/tcp 43454/udp
 
 ## PHASE TWO
 ## Application and support installation
-ENV pkg_application="openssl transmission-daemon file"
+ENV pkg_application="openssl transmission-daemon"
 RUN apk add --no-cache $pkg_application
 
 ## PHASE THREE
@@ -47,7 +48,7 @@ ENV lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
 RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser && \
 	mkdir -p /etc/runit ; mkdir -p /service
 #VOLUME [ "/config", "/downloads" ]
-COPY [ "application/", "/opt/rootwyrm/defaults/" ]
+COPY [ "application/", "/opt/rootwyrm/" ]
 COPY [ "sv/", "/etc/sv/" ]
 #ADD application/settings.json /opt/rootwyrm/defaults/ 
 ADD config/rc.conf /etc/rc.conf
@@ -56,14 +57,10 @@ RUN sed -i -e '/^tty*/d' /etc/inittab && \
 sed -i -e '/^# Set up*/d' /etc/inittab && \
 sed -i -e '/^::ctrlalt*/d' /etc/inittab  && \
 sed -i -e '/.*salute$/d' /etc/inittab
-	#mkdir /config && mkdir /downloads && \
-	#chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
-	#mkdir /var/log/supervisor 
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
 ADD README.md /README.md
 
 ## TERMINUS
-#CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
 CMD [ "/sbin/init" ]
