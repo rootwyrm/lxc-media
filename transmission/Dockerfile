@@ -1,4 +1,4 @@
-FROM  rootwyrm/lxc-media:base
+FROM  docker.io/rootwyrm/lxc-media:base
 ## The magic begins...
 MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 
@@ -6,7 +6,7 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 ## NOTE: Uses TSLE NVD with Substring ISO8601
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
-        com.rootwyrm.status="release" \
+        com.rootwyrm.status="stable" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
