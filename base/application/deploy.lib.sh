@@ -96,14 +96,17 @@ deploy_lxcmedia_user()
 		export lxcshell=/bin/sh
 	fi
 
-	if [[ $(id -u $lxcuser) -eq $lxcuid ]]; then
-		echo "[DEPLOY] User $lxcuser already at $lxcuid, leaving as is."
-		return 0
-	elif [[ $(id -u $lxcuser) != 0 ]]; then
-		## NOP - user doesn't exist
-		echo -n "" > /dev/null
-	else
-		deluser $lxcuser
+	grep $lxcuser /etc/passwd > /dev/null
+	if [ $? -eq 0 ]; then
+		if [[ $(id -u $lxcuser) -eq $lxcuid ]]; then
+			echo "[DEPLOY] User $lxcuser already at $lxcuid, leaving as is."
+			return 0
+		elif [[ $(id -u $lxcuser) != 0 ]]; then
+			## NOP - user doesn't exist
+			echo -n "" > /dev/null
+		else
+			deluser $lxcuser
+		fi
 	fi
 	
 	# NOTE: NEVER use \ to make readable, base chokes on it.	
@@ -209,14 +212,20 @@ deploy_application_git()
 
 ## runit configuration and management
 ########################################
-## XXX: Link into /etc/services
 runit_linksv()
 {
 	if [ -d /etc/sv/$app_svname ]; then
 		ln -s /etc/sv/$app_svname /etc/service
 		if [ $? -ne 0 ]; then
-			echo "[FATAL] Failed to install application in runit."
+			echo "[FATAL] Failed to install $app_svname in runit."
 			exit 1
+		fi
+	fi
+	## Link crond if it's present
+	if [ -d /etc/sv/cron ]; then
+		ln -s /etc/sv/cron /etc/service
+		if [ $? -ne 0 ]; then
+			echo "[FATAL] Failed to install crond in runit."
 		fi
 	fi
 }
