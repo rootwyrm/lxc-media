@@ -7,7 +7,7 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 ## NOTE: Uses TSLE NVD with Substring ISO8601, hash=sha256
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
-        com.rootwyrm.status="stable" \
+        com.rootwyrm.status="release" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
@@ -26,7 +26,7 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="" \
         com.rootwyrm.rootcore.synology_compatible=""
 
-ENV pkg_common="runit bash file"
+ENV pkg_common="apk-cron openrc runit bash git file"
 
 ## Create common elements
 RUN mkdir -p /opt/rootwyrm/defaults; mkdir -p /opt/rootwyrm/build; \
