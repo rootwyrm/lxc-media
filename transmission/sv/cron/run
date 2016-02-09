@@ -1,0 +1,6 @@
+#!/bin/sh
+## cron.run
+## vers = 966e66e10f93546923b24ea921adcae2
+
+echo "[START] crond"
+exec /usr/sbin/crond -f -L /var/log/cron

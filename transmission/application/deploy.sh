@@ -88,3 +88,6 @@ deploy_lxcmedia_ownership
 runit_linksv
 
 deploy_complete
+
+echo "[DEPLOY] Disabling firstboot."
+rm /etc/service/firstboot
