@@ -210,6 +210,95 @@ deploy_application_git()
 	esac
 }
 
+## openssl functions
+########################################
+ssl_ssc_create()
+{
+	export ssldir="/config/ssl"
+	if [[ -f $ssldir/media.crt ]] || [[ -f $ssldir/media.key ]]; then
+		## Don't obliterate user provided key.
+		echo "[SSL] Found existing $ssldir/media.crt"
+		ssl_certificate_print
+		return 0
+	fi
+
+	export sslpass=$(head -c 500 /dev/urandom | tr -dc a-z0-9A-Z | head -c 64)
+	export mydomain=$(cat /etc/resolv.conf | grep search | awk '{print $2}')
+	if [ -z $shorthost ]; then
+		export shorthost=$(cat /etc/hostname)
+	fi
+	## Self-signed certs use the docker container ID and domain.
+	export OPENSSLCONFIG=/opt/rootwyrm/defaults/openssl.cnf
+	## Fix-up openssl.cnf
+	sed -i -e 's,_REPLACE_HOSTNAME_,'$shorthost'.'$mydomain',' $OPENSSLCONFIG
+	sed -i -e 's,_DOMAIN_,'$mydomain',' $OPENSSLCONFIG
+
+	## genkey
+	openssl genrsa -des3 -out $ssldir/media.key -passout env:sslpass 2048
+	check_error $? ssl_gen_key
+
+	## gencsr
+	openssl req -new -x509 -days 3650 -batch -nodes \
+		-config $OPENSSLCONFIG -key $ssldir/media.key \
+		-out $ssldir/media.crt -passin env:sslpass
+	check_error $? ssl_gen_csr
+
+	mv $ssldir/media.key $ssldir/media.key.lock
+	echo $sslpass > $ssldir/media.key.lock.string
+	chmod 0400 $ssldir/media.key.lock.string
+
+	## unlock key
+	openssl rsa -in $ssldir/media.key.lock -out $ssldir/media.key -passin env:sslpass
+	check_error $? ssl_unlock_key
+
+	for sslfile in `ls $ssldir/*`; do
+		chown $lxcuid:$lxcgid $sslfile
+		chmod 0600 $sslfile
+	done
+}
+
+ssl_certificate_print()
+{
+	## Print the certificate info
+	if [ -f $ssldir/media.crt ]; then
+		crtfp=`openssl x509 -subject -dates -fingerprint -in $ssldir/media.crt | grep Finger`
+		echo "[SSL] $crtfp"
+		check_error $? ssl_get_fingerprint
+		crtdns=`openssl x509 -text -noout -subject -in $ssldir/media.crt | grep DNS | awk '{print $1,$2,$3,$4,$5,$6}'`
+		echo "[SSL] $crtdns"
+		## Don't check for DNS error.	
+		crtissuer=`openssl x509 -text -noout -subject -in $ssldir/media.crt | grep Issuer:`
+		echo "[SSL] $crtissuer"
+		check_error $? ssl_get_issuer
+		if [[ $(stat -c %U $ssldir/media.crt) != $lxcuser ]]; then
+			chown $lxcuser $ssldir/media.crt
+		fi
+		if [[ $(stat -c %G $ssldir/media.crt) != $lxcgroup ]]; then
+			chgrp $lxcgroup $ssldir/media.crt
+		fi
+		if [[ $(stat -c %a $ssldir/media.crt) != '700' ]]; then
+			chmod 0700 $ssldir/media.crt
+		fi
+	else
+		echo "[FATAL] ssl_certificate_print couldn't find certificate."
+		exit 1
+	fi
+}
+
+sabnzbd_regen_api()
+{
+        call="api?mode=config&name=set_apikey&apikey=357e729fed6617e4cabd237a36179f00"
+        ## sabnzbd doesn't listen on localhost.
+        ipaddr=$(ifconfig eth0 | grep "inet addr" | cut -d : -f 2 | awk '{print $1}')
+        curl "http://$ipaddr:9080/$call" > /config/sabnzbd.api
+        if [ $? -ne 0 ]; then
+                echo "[FATAL] Error regenerating API key."
+                exit 1
+        fi
+        chown $lxcuid:$lxcgid /config/sabnzbd.api
+}
+
+
 ## runit configuration and management
 ########################################
 runit_linksv()
