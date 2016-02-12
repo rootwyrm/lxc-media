@@ -10,9 +10,9 @@ LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.status="stable" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
-        com.rootwyrm.nvd.update="0" \
-        com.rootwyrm.nvd.update_sub="2016-02-09" \
-        com.rootwyrm.nvd.hash="f3ebee3db03ed7ea68bf40f2b01d5a9d72d92d427a10391e77bfd05da0903623" \
+        com.rootwyrm.nvd.update="1" \
+        com.rootwyrm.nvd.update_sub="2016-02-12" \
+        com.rootwyrm.nvd.hash="d627a1e2df42e56d278d10f65856eec0b6bc047b356fe48465e02fd5b86400d6" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/base/CHANGELOG"
 
