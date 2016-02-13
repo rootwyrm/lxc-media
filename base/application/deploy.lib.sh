@@ -61,6 +61,8 @@ deploy_complete()
 	if [ -f /deploy.new ]; then
 		rm /deploy.new
 	fi
+
+	rm /etc/service/firstboot
 }
 
 ## user management

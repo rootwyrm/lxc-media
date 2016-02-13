@@ -11,8 +11,8 @@ LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="1" \
-        com.rootwyrm.nvd.update_sub="2016-02-12" \
-        com.rootwyrm.nvd.hash="d627a1e2df42e56d278d10f65856eec0b6bc047b356fe48465e02fd5b86400d6" \
+        com.rootwyrm.nvd.update_sub="2016-02-13" \
+        com.rootwyrm.nvd.hash="fc77eb3d924e0562dbf59fd794bdd815db92adc73ef152c8d23ab14b6898d6dd" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/base/CHANGELOG"
 
