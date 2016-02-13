@@ -285,20 +285,6 @@ ssl_certificate_print()
 	fi
 }
 
-sabnzbd_regen_api()
-{
-        call="api?mode=config&name=set_apikey&apikey=357e729fed6617e4cabd237a36179f00"
-        ## sabnzbd doesn't listen on localhost.
-        ipaddr=$(ifconfig eth0 | grep "inet addr" | cut -d : -f 2 | awk '{print $1}')
-        curl "http://$ipaddr:9080/$call" > /config/sabnzbd.api
-        if [ $? -ne 0 ]; then
-                echo "[FATAL] Error regenerating API key."
-                exit 1
-        fi
-        chown $lxcuid:$lxcgid /config/sabnzbd.api
-}
-
-
 ## runit configuration and management
 ########################################
 runit_linksv()
