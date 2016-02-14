@@ -1,0 +1,12 @@
+#!/bin/sh
+## sabnzbd/run
+## vers= 3edb737075f72f1723cd0c4ce180025f
+
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
+
+cat /etc/motd
+echo "[START] sabnzbd as user: $lxcuser:$lxcgroup"
+## TODO: Need to update Python env here probably.
+## XXX: Disable IPv6 to prevent certain problems in lxc
+exec chpst -u $lxcuser:$lxcgroup /opt/sabnzbd/SABnzbd.py --browser 0 --config-file /config/sabnzbd.ini --pid /config/ --no_ipv6

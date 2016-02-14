@@ -1,4 +1,4 @@
-FROM  gliderlabs/alpine:latest
+FROM  docker.io/rootwyrm/lxc-media:base
 ## The magic begins...
 MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 
@@ -7,10 +7,11 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
         com.rootwyrm.status="release" \
-        com.rootwyrm.nvd.release="0" \
+        com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
-        com.rootwyrm.nvd.update_sub="2016-01-27" \
+        com.rootwyrm.nvd.update_sub="2016-02-14" \
+        com.rootwyrm.nvd.hash="234f8a9256889f6944719f0505eca52ee7b59f0df4b3b12dcf2a4fd8beb1bc5b" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/sabnzbd/CHANGELOG"
 
@@ -24,49 +25,46 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="true" \
         com.rootwyrm.rootcore.synology_compatible="true"
 
-## sudo docker create -p 8080:8080 -p 8081:8081 --name=testnzb alp-nzb
-
 ## PHASE ZERO
 ## Global container variables
-#ENV 	lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
-EXPOSE	9080/tcp
-EXPOSE	9081/tcp 
+EXPOSE	9080/tcp 9090/tcp
 
 ## PHASE ONE
-## Common components
-ENV pkg_common="apk-cron supervisor bash git"
-RUN apk update ; apk upgrade ; apk add --no-cache $pkg_common
+## Base system components
+#ENV pkg_common="apk-cron openrc supervisor bash git"
+#RUN apk update ; apk upgrade ; apk add --no-cache $pkg_common
+RUN apk update && apk add --no-cache --virtual vp_python_base python && \
+apk add --no-cache --virtual vp_sabnzbd curl git 
 
 ## PHASE TWO
 ## Application and support installation
 #### python base and pip
-RUN apk add --no-cache --virtual vp_python_base python 
+COPY [ "sv/", "/etc/sv/" ]
+COPY [ "build/", "/root/build" ]
 ADD	application/sitecustomize.py /usr/lib/python2.7/site-packages/sitecustomize.py
-ADD build/lbuild.par2.sh /root/
-ADD build/lbuild.pyenv.sh /root/
+#### XXX: moved to deploy.sh
 #### XXX: Must sleep 5 for docker autobuild to not lock-race
-RUN	chmod +x /root/lbuild.par2.sh && sleep 5; \
-/root/lbuild.par2.sh
-RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
-/root/lbuild.pyenv.sh
-RUN	mkdir -p /opt/rootwyrm/defaults && \
-mkdir /var/log/supervisor && \
-mkdir /opt/sabnzbd && \
-git clone https://github.com/sabnzbd/sabnzbd.git -b 0.7.x --depth=1 /opt/sabnzbd && touch /deploy
-
-ADD application/* /opt/rootwyrm/
-ADD application/defaults/* /opt/rootwyrm/defaults/
+#RUN	chmod +x /root/lbuild.par2.sh && sleep 5; \
+#/root/lbuild.par2.sh
+#RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
+#/root/lbuild.pyenv.sh
+#RUN	mkdir -p /opt/rootwyrm/defaults && \
+#mkdir /var/log/supervisor && \
+RUN mkdir /opt/sabnzbd 
+#&& \
+#git clone https://github.com/sabnzbd/sabnzbd.git -b 0.7.x --depth=1 /opt/sabnzbd && touch /deploy
+#
+COPY [ "application/", "/opt/rootwyrm/" ]
+#ADD application/defaults/* /opt/rootwyrm/defaults/
 
 ## PHASE THREE
 ## Configuration
-ADD config/supervisord.conf /etc/supervisord.conf
-ADD config/*ini /etc/supervisor.d/ 
 #ADD application/sickrage.ini /etc/supervisor.d/
-VOLUME [ "/config", "/downloads" ]
+#VOLUME [ "/config", "/downloads", "/run" ]
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
 ADD README.md /README.md
 
 ## TERMINUS
-CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
+CMD [ "/sbin/runsvdir", "-P", "/etc/service" ]
