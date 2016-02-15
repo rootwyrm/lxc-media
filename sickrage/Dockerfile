@@ -7,10 +7,10 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
         com.rootwyrm.status="release" \
-        com.rootwyrm.nvd.release="0" \
+        com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
-        com.rootwyrm.nvd.update_sub="2016-01-27" \
+        com.rootwyrm.nvd.update_sub="2016-02-15" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/sickrage/CHANGELOG"
 
@@ -33,8 +33,6 @@ EXPOSE	8081/tcp
 
 ## PHASE ONE
 ## Common components
-#ENV pkg_common="apk-cron supervisor bash git"
-#RUN apk update ; apk upgrade ; apk add --no-cache $pkg_common
 RUN apk update && apk add --no-cache --virtual vp_python_base python && \
 apk add --no-cache --virtual vp_sickrage curl git && mkdir -p /opt/sickrage
 
@@ -43,44 +41,20 @@ apk add --no-cache --virtual vp_sickrage curl git && mkdir -p /opt/sickrage
 COPY [ "sv/", "/etc/sv" ]
 COPY [ "build/", "/root/build" ]
 ADD	application/sitecustomize.py /usr/lib/python2.7/site-packages/sitecustomize.py
-#### XXX: Must sleep 5 for docker autobuild to not lock-race
-#RUN	chmod +x /root/lbuild.pyenv.sh && sleep 5; \
-#/root/lbuild.pyenv.sh
-#### XXX: Must define shell - gliderlabs/docker-alpine/issues/141
-#RUN adduser -h /home/$lxcuser -g "lxc-media user" -u $lxcuid -G $lxcgroup -D -s /bin/sh $lxcuser && \
-#RUN	mkdir -p /opt/rootwyrm/defaults && \
-#mkdir /var/log/supervisor && \
-#mkdir /opt/sickrage
+RUN	for bld in `ls /root/build/ | sort`; do \
+	/root/build/$bld ; \
+	done
 
 COPY [ "application/", "/opt/rootwyrm/" ]
 
 ## PHASE THREE
 ## Configuration
-#ADD config/supervisord.conf /etc/supervisord.conf
-#ADD config/*.ini /etc/supervisor.d/ 
-#ADD application/sickrage.ini /etc/supervisor.d/
+## Volume for output
 VOLUME [ "/media/sickrage" ]
-#VOLUME [ "/config", "/downloads", "/media/sickrage" ]
-#RUN	chown $lxcuid:$lxcgid /config && chown $lxcuid:$lxcgid /downloads && \
-#	mkdir /var/log/supervisor
-#RUN	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisord.conf ; \
-#	sed -i -e 's,LXCUSER,'$lxcuser',g' /etc/supervisor.d/*.ini ; \
-#	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisord.conf ; \
-#	sed -i -e 's,LXCGROUP,'$lxcgroup',g' /etc/supervisor.d/*.ini
-#ADD application/config.ini /config/
-#RUN chown -R $lxcuid:$lxcgid /config/*
-# XXX: Missing default config
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...
-#RUN mkdir -p /opt/rootwyrm
 ADD README.md /README.md
 
-## XXX: TEMP SKIP
-#RUN	mkdir -p /opt/sickrage
-#RUN git clone https://github.com/SickRage/SickRage.git -b master --depth=1 /opt/sickrage && touch /deploy
-
 ## TERMINUS
-#CMD [ "/usr/bin/supervisord", "-n", "-d", "/", "-u", "0", "-m", "027", "-c", "/etc/supervisord.conf" ]
-CMD [ "/sbin/init" ]	# TEMP
-
+CMD [ "/sbin/runsvdir", "-P", "/etc/service" ]

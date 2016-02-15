@@ -95,11 +95,12 @@ generate_motd
 cat /etc/motd
 
 ## Do build phase.
-for bp in `ls /root/build/*.sh | sort`; do
-	chmod +x $bp
-	$bp
-	check_error $? $bp
-done
+## 2016-02-15: moved to Dockerfile for this one
+#for bp in `ls /root/build/*.sh | sort`; do
+#	chmod +x $bp
+#	$bp
+#	check_error $? $bp
+#done
 
 echo "[DEPLOY] Deploying lxc-media user:"
 deploy_lxcmedia_user
