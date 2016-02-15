@@ -35,6 +35,6 @@ echo "http://alpine.gliderlabs.com/alpine/edge/testing" >> /etc/apk/repositories
 apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
 COPY [ "sv/", "/etc/sv" ]
-RUN ln -s /etc/sv/firstboot /etc/service/ 
+RUN ln -s /etc/sv/firstboot /etc/service/ ; ln -s /etc/service /service
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]
