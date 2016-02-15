@@ -1,0 +1,10 @@
+#!/bin/bash
+## sickrage/run
+## vers = 4e4d7d9d74fbc3b882c4f66fcc5ebe82
+
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
+
+cat /etc/motd
+echo "[START] sickrage as user: $lxcuser:$lxcgroup"
+exec chpst -u $lxcuser:$lxcgroup /opt/sickrage/SickBeard.py --nolaunch --datadir=/config

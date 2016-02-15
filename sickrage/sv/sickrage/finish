@@ -1,0 +1,29 @@
+#!/bin/bash
+
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
+
+if [ $(ps ax | grep SickBeard.py > /dev/null) -eq 0 ]; then
+	## Use SickRage API to do shutdown
+	echo "[STOP] SickRage: shutting down via API"
+	ipaddr=$(ifconfig eth0 |grep "inet addr" | cut -d : -f 2 | awk '{print $1}')
+	sickport=$(grep ^web_port /config/config.ini | awk '{print $3}')
+	apikey=$(grep "^api_key =" /config/config.ini | awk '{print $3}')
+
+	curl -k "https://$ipaddr:$sickport/api/$apikey/?cmd=sb.shutdown"
+	if [ $? -ne 0 ]; then
+		# Kill it with fire.
+		kill -9 `ps ax |grep SickBeard.py |awk '{print $1}'`
+	else
+		## Try to give it time to clean up.
+		while true; do
+			sleep 5
+			ps ax | grep SickBeard.py > /dev/null
+			if [ $? -ne 0 ]; then
+				break
+			fi
+		done
+	fi
+else
+	echo "[STOP] SickRage not running!"
+fi
