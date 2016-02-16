@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ ! -z $PERIODIC ]; then
+	SYSTEM_TAB="-s $PERIODIC"
+fi
+if [ ! -z $USERCRON ]; then
+	USER_TAB="-c $USERCRON"
+fi
+
+## Always tone down log level
+exec /usr/sbin/crond -l 3 $SYSTEM_TAB $USER_TAB

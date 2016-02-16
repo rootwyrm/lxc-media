@@ -26,7 +26,7 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="" \
         com.rootwyrm.rootcore.synology_compatible=""
 
-ENV pkg_common="runit bash file"
+ENV pkg_common="runit bash file dcron apk-cron"
 
 ## Create common elements
 RUN mkdir -p /opt/rootwyrm/defaults; mkdir -p /opt/rootwyrm/build; \
@@ -35,6 +35,8 @@ echo "http://alpine.gliderlabs.com/alpine/edge/testing" >> /etc/apk/repositories
 apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
 COPY [ "sv/", "/etc/sv" ]
-RUN ln -s /etc/sv/firstboot /etc/service/ ; ln -s /etc/service /service
+RUN ln -s /etc/sv/firstboot /etc/service/ ; \
+	ln -s /etc/sv/cron /etc/service/ ; \
+	ln -s /etc/service /service
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]
