@@ -41,10 +41,6 @@ COPY [ "sv/", "/etc/sv/" ]
 
 ## PHASE THREE
 ## Configuration
-RUN sed -i -e '/^tty*/d' /etc/inittab && \
-sed -i -e '/^# Set up*/d' /etc/inittab && \
-sed -i -e '/^::ctrlalt*/d' /etc/inittab  && \
-sed -i -e '/.*salute$/d' /etc/inittab
 
 ## PHASE TEN (from Navarone)
 ## Cleanup unsafe/unneeded users...

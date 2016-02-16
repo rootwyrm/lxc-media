@@ -36,6 +36,10 @@ apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
 COPY [ "sv/", "/etc/sv" ]
 RUN ln -s /etc/sv/firstboot /etc/service/ ; \
-	ln -s /etc/service /service
+ln -s /etc/service /service ; \
+sed -i -e '/^tty*/d' /etc/inittab && \
+sed -i -e '/^# Set up*/d' /etc/inittab && \
+sed -i -e '/^::ctrlalt*/d' /etc/inittab  && \
+sed -i -e '/.*salute$/d' /etc/inittab
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]
