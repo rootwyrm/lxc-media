@@ -43,7 +43,7 @@ COPY [ "build/", "/root/build" ]
 ADD	application/sitecustomize.py /usr/lib/python2.7/site-packages/sitecustomize.py
 RUN	for bld in `ls /root/build/ | sort`; do \
 	/root/build/$bld ; \
-	done
+	done 
 
 COPY [ "application/", "/opt/rootwyrm/" ]
 
