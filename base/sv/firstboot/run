@@ -1,6 +1,8 @@
 #!/bin/sh
 ## firstboot.run
-## vers = bfce099b98c1d5f05652f353cc1eb16d
+## vers = 0ce2b7d9408756d6e2e4382f5b30f15f
 
-echo "[START] First Boot Deployment executing..."
-exec /opt/rootwyrm/deploy.sh
+if [ -f /deploy ]; then
+	echo "[START] First Boot Deployment executing..."
+	exec /opt/rootwyrm/deploy.sh
+fi
