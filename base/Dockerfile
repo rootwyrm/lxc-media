@@ -36,7 +36,6 @@ apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
 COPY [ "sv/", "/etc/sv" ]
 RUN ln -s /etc/sv/firstboot /etc/service/ ; \
-	ln -s /etc/sv/cron /etc/service/ ; \
 	ln -s /etc/service /service
 
 VOLUME [ "/config", "/downloads", "/shared", "/run" ]
