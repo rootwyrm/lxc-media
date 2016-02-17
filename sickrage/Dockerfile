@@ -6,11 +6,12 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 ## NOTE: Uses TSLE NVD with Substring ISO8601
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
-        com.rootwyrm.status="release" \
+        com.rootwyrm.status="stable" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
         com.rootwyrm.nvd.update_sub="2016-02-15" \
+		com.rootwyrm.nvd.hash="d4390b7607c47b8f7c905e998dbe91b2a7fd937bd546dce1150100ecc23a0626" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/sickrage/CHANGELOG"
 
@@ -24,12 +25,10 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="true" \
         com.rootwyrm.rootcore.synology_compatible="true"
 
-## sudo docker create -p 8080:8080 -p 8081:8081 --name=testnzb alp-nzb
-
 ## PHASE ZERO
 ## Global container variables
-EXPOSE	8081/tcp
 #ENV 	lxcuser="lxcmedia" lxcuid="1024" lxcgroup="users" lxcgid="100"
+EXPOSE	8081/tcp
 
 ## PHASE ONE
 ## Common components
