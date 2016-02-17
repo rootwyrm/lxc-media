@@ -181,7 +181,7 @@ deploy_application_git()
 	case $1 in
 		[rR][eE][iI][nN][sS][tT]*)
 		## This function generally shouldn't come up, but might.
-			if [[ -z $app_destdir ]] && [[ -d $app_destdir ]]; then
+			if [[ ! -z $app_destdir ]] && [[ -d $app_destdir ]]; then
 				rm -rf $app_destdir
 				mkdir $app_destdir
 			fi
