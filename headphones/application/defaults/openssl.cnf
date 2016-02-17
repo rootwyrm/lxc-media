@@ -1,0 +1,23 @@
+HOME		= /root/
+RANDFILE	= $ENV::HOME/.rnd
+
+[ req ]
+prompt	= no
+default_bits	= 2048
+default_md		= sha256
+encrypt_key 	= yes
+distinguished_name	= req_dn
+x509_extensions 	= cert_type
+
+[req_dn]
+C=US
+ST=Ohio
+L=Anytown
+O=rootwyrm/lxc-media
+OU=lxc-media/CouchPotato
+CN=_REPLACE_HOSTNAME_
+emailAddress=postmaster@_DOMAIN_
+
+[cert_type]
+nsCertType	= server
+nsComment	= "lxc-media/CouchPotato Auto-Generated Certificate"
