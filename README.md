@@ -8,8 +8,8 @@ Designed to quickly deploy an entire media hub using Docker Composer and Docker 
 * **Transmission** - rootwyrm/lxc-media:transmission[![](https://badge.imagelayers.io/rootwyrm/lxc-media:transmission.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:transmission 'Get your own badge on imagelayers.io')
 * **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd [![](https://badge.imagelayers.io/rootwyrm/lxc-media:sabnzbd.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:sabnzbd 'Get your own badge on imagelayers.io')
 * **[SickRage]** - rootwyrm/lxc-media:sickrage
-* [CouchPotato] - rootwyrm/lxc-media:couchpotato
-* [Headphones] - rootwyrm/lxc-media:headphones
+* **[CouchPotato]** - rootwyrm/lxc-media:couchpotato
+* **[Headphones]** - rootwyrm/lxc-media:headphones
 * [Mylar] - rootwyrm/lxc-media:mylar
 * LazyLibrarian (currently tracking [DobyTang]) - rootwyrm/lxc-media:lazylib
   * [BookStrap] included at no extra charge!
