@@ -11,7 +11,7 @@ LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
         com.rootwyrm.nvd.update_sub="2016-03-06" \
-        com.rootwyrm.nvd.hash="asdf" \
+        com.rootwyrm.nvd.hash="45c7151383def024ca49a5074053b698a83b581e96ec9f9649c176dc48633335" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/lazylibrarian/CHANGELOG"
 

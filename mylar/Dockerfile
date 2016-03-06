@@ -11,7 +11,7 @@ LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="0" \
         com.rootwyrm.nvd.update_sub="2016-03-05" \
-        com.rootwyrm.nvd.hash="4ae1df7c10bc7e72dfdfb940b0048560ba294fea23263a2444afc60fbb843fb8" \
+        com.rootwyrm.nvd.hash="0900940fe726500f202f409d6182fd945f917e93fb34115fb3f0aab0c50d2c35" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/couchpotato/CHANGELOG"
 
