@@ -1,0 +1,9 @@
+#!/bin/bash
+## sv/headphones/run
+## vers = 9f41d8b721489ba2d182843f2190a4e8
+
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
+
+cat /etc/motd
+exec chpst -u $lxcuser:$lxcgroup /usr/bin/python /opt/lazylibrarian/LazyLibrarian.py --nolaunch --datadir=/config --pidfile=/run/lazylibrarian.pid

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kill -9 $(ps ax |grep LazyLibrarian.py |awk '{print $1}')
