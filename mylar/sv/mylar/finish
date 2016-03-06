@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kill -9 $(ps ax |grep Mylar.py |awk '{print $1}')

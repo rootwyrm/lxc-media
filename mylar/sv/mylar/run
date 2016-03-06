@@ -1,0 +1,14 @@
+#!/bin/bash
+## sv/headphones/run
+## vers = 9f41d8b721489ba2d182843f2190a4e8
+
+export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
+export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
+
+cat /etc/motd
+echo "[START] mylar as user: $lxcuser:$lxcgroup"
+if [ -f /config/mylar.db ]; then
+	exec chpst -u $lxcuser:$lxcgroup /usr/bin/python /opt/mylar/Mylar.py --nolaunch --backup --datadir=/config 
+else
+	exec chpst -u $lxcuser:$lxcgroup /usr/bin/python /opt/mylar/Mylar.py --nolaunch --datadir=/config 
+fi
