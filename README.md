@@ -10,7 +10,7 @@ Designed to quickly deploy an entire media hub using Docker Composer and Docker 
 * **[SickRage]** - rootwyrm/lxc-media:sickrage
 * **[CouchPotato]** - rootwyrm/lxc-media:couchpotato
 * **[Headphones]** - rootwyrm/lxc-media:headphones
-* [Mylar] - rootwyrm/lxc-media:mylar
+* **[Mylar]** - rootwyrm/lxc-media:mylar
 * LazyLibrarian (currently tracking [DobyTang]) - rootwyrm/lxc-media:lazylib
   * [BookStrap] included at no extra charge!
 
@@ -25,9 +25,9 @@ Because people can't agree (or agree too much) on which ports they want to use, 
 | sabnzbd        	| http      	| 9080      	| 9080          	|
 | sabnzbd        	| https     	| 9090      	| 9090          	|
 | sickrage       	| http      	| 8081      	| 8081          	|
-| couchpotato    	| http      	| TBD       	| 5050          	|
-| headphones     	| http      	| TBD       	| TBD           	|
-| mylar          	| http      	| TBD       	| TBD           	|
+| couchpotato    	| http      	| 5050      	| 5050          	|
+| headphones     	| http      	| 8181      	| 8181          	|
+| mylar          	| http      	| 8071      	| 8071          	|
 | lazylibrarian  	| http      	| TBD       	| TBD           	|
 
 # Volume Layout
