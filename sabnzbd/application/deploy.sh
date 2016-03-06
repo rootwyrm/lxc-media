@@ -130,7 +130,7 @@ sabnzbd_regen_apikey()
 ######################################################################
 
 ## XXX: Bugfix
-ln -s /etc/service /service
+#ln -s /etc/service /service
 
 ingest_environment
 test_deploy
