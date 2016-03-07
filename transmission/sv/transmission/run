@@ -5,6 +5,6 @@
 export lxcuser=$(grep "lxc-media user" /etc/passwd | cut -d : -f 1)
 export lxcgroup=$(grep "$lxcuser" /etc/group | cut -d : -f 1)
 
-echo "[START] transmission as user: $lxcuid:$lxcgid"
+echo "[START] transmission as user: $lxcuser:$lxcgroup"
 ## XXX: 2016-02-04: must be on single line
 exec chpst -u $lxcuser:$lxcgroup /usr/bin/transmission-daemon --blocklist --foreground --portmap --watch-dir /downloads/blackhole --config-dir /config --download-dir /downloads --incomplete-dir /downloads/incomplete --pid-file /var/run/transmission.pid
