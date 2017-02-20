@@ -5,15 +5,15 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 ## Rebase to cut down on the layers, which are getting ridiculous.
 ## We always use labels.
 ## NOTE: Uses TSLE NVD with Substring ISO8601, hash=sha256
-ARG VCS_REF
-ARG BUILD_DATE
+ARG VCS_REF BUILD_DATE \
+	NVD_UPDATE_SUB
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
         com.rootwyrm.status="stable" \
         com.rootwyrm.nvd.release="1" \
         com.rootwyrm.nvd.version="0" \
         com.rootwyrm.nvd.update="3" \
-        com.rootwyrm.nvd.update_sub="2017-02-20" \
+        com.rootwyrm.nvd.update_sub="$NVD_UPDATE_SUB" \
 		com.rootwyrm.nvd.build_time="$BUILD_DATE" \
         com.rootwyrm.vcs-type="git" \
         com.rootwyrm.changelog-url="https://www.github.com/rootwyrm/lxc-media/base/CHANGELOG" \
