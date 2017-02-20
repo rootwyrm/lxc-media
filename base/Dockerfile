@@ -26,7 +26,7 @@ LABEL   com.rootwyrm.rootcore.base="gliderlabs/alpine" \
         com.rootwyrm.rootcore.qnap_compatible="" \
         com.rootwyrm.rootcore.synology_compatible=""
 
-ENV pkg_common="runit bash file dcron apk-cron"
+ENV pkg_common="runit bash file dcron apk-cron openssl"
 
 ## Create common elements
 RUN mkdir -p /opt/rootwyrm/defaults; mkdir -p /opt/rootwyrm/build; \
