@@ -31,7 +31,9 @@ ENV pkg_common="runit bash file dcron apk-cron"
 ## Create common elements
 RUN mkdir -p /opt/rootwyrm/defaults; mkdir -p /opt/rootwyrm/build; \
 mkdir -p /var/log/runit ; touch /deploy ; \
-echo "http://alpine.gliderlabs.com/alpine/edge/testing" >> /etc/apk/repositories && \
+echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
+echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
 apk add --no-cache $pkg_common
 COPY [ "application/", "/opt/rootwyrm" ]
 COPY [ "sv/", "/etc/sv" ]
