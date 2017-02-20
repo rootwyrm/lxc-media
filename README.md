@@ -4,14 +4,14 @@ Media Hub (Docker Composer and Containers)
 Designed to quickly deploy an entire media hub using Docker Composer and Docker Containers. Mostly built for me. Available to the world at large (with some restrictions) because I'm a nice guy. Also because I can't be the only one with this brilliant idea - but so far I am the only one to actually *implement* it.
 
 # Components (those in bold are complete!)
-[![](https://badge.imagelayers.io/rootwyrm/lxc-media:base.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:base 'Get your own badge on imagelayers.io')
-* **Transmission** - rootwyrm/lxc-media:transmission[![](https://badge.imagelayers.io/rootwyrm/lxc-media:transmission.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:transmission 'Get your own badge on imagelayers.io')
-* **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd [![](https://badge.imagelayers.io/rootwyrm/lxc-media:sabnzbd.svg)](https://imagelayers.io/?images=rootwyrm/lxc-media:sabnzbd 'Get your own badge on imagelayers.io')
-* **[SickRage]** - rootwyrm/lxc-media:sickrage
-* **[CouchPotato]** - rootwyrm/lxc-media:couchpotato
-* **[Headphones]** - rootwyrm/lxc-media:headphones
-* **[Mylar]** - rootwyrm/lxc-media:mylar
-* **LazyLibrarian** (currently tracking [DobyTang]) - rootwyrm/lxc-media:lazylib
+* **Base** [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:base.svg)](https://microbadger.com/images/rootwyrm/lxc-media:base "Get your own image badge on microbadger.com")
+* **Transmission** - rootwyrm/lxc-media:transmission [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:transmission.svg)](https://microbadger.com/images/rootwyrm/lxc-media:transmission "Get your own image badge on microbadger.com")
+* **[sabnzbd]** - rootwyrm/lxc-media:sabnzbd [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:sabnzbd.svg)](https://microbadger.com/images/rootwyrm/lxc-media:sabnzbd "Get your own image badge on microbadger.com")
+* **[SickRage]** - rootwyrm/lxc-media:sickrage [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:sickrage.svg)](https://microbadger.com/images/rootwyrm/lxc-media:sickrage "Get your own image badge on microbadger.com")
+* **[CouchPotato]** - rootwyrm/lxc-media:couchpotato [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:couchpotato.svg)](https://microbadger.com/images/rootwyrm/lxc-media:couchpotato "Get your own image badge on microbadger.com")
+* **[Headphones]** - rootwyrm/lxc-media:headphones [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:headphones.svg)](https://microbadger.com/images/rootwyrm/lxc-media:headphones "Get your own image badge on microbadger.com")
+* **[Mylar]** - rootwyrm/lxc-media:mylar [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:mylar.svg)](https://microbadger.com/images/rootwyrm/lxc-media:mylar "Get your own image badge on microbadger.com")
+* **LazyLibrarian** (currently tracking [DobyTang]) - rootwyrm/lxc-media:lazylib [![](https://images.microbadger.com/badges/image/rootwyrm/lxc-media:lazylibrarian.svg)](https://microbadger.com/images/rootwyrm/lxc-media:lazylibrarian "Get your own image badge on microbadger.com")
   * [BookStrap] included at no extra charge!
 
 **CAUTION**: There is some magic involved to ensure containers can cross-talk. Each container is configured separately. READ THE README IN EACH CONTAINER.
