@@ -1,0 +1,6 @@
+#!/bin/bash
+
+## $IMAGE_NAME var is injected by Hub
+docker build --build-arg VCS_REF=`git rev-parse --short HEAD` \
+	--build-arg BUILD_DATE=`date -u +"%Y-%d-%mT%H:%M:%SZ"` \
+	-t $IMAGE_NAME .
