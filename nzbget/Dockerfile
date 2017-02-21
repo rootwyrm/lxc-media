@@ -4,8 +4,9 @@ MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 
 ## We always use labels.
 ## NOTE: Uses TSLE NVD with Substring ISO8601
-ARG	VCS_REF BUILD_DATE \
-	NVD_UPDATE_SUB
+ARG VCS_REF 
+ARG BUILD_DATE
+ARG NVD_UPDATE_SUB
 LABEL   com.rootwyrm.vendor="RootWyrm" \
         com.rootwyrm.project="lxc-media" \
         com.rootwyrm.status="master" \
