@@ -1,4 +1,4 @@
-FROM  docker.io/rootwyrm/lxc-media:base
+FROM  docker.io/rootwyrm/lxc-media:appliance_base
 ## The magic begins...
 MAINTAINER    Phillip "RootWyrm" Jaenke <docker@rootwyrm.com>
 
