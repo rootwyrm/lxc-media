@@ -77,13 +77,13 @@ deploy_lxcmedia_user()
 		export lxcgid="100"
 	else
 		# Defaults are lxcmedia:users @ 1024:100
-		if [[ -z $lxcuser ]]; then export lxcuser="lxcmedia"; fi
-		if [[ -z $lxcuid ]]; then export lxcuid="1024"; fi
-		if [[ -z $lxcgroup ]]; then export lxcgroup="users"; fi
+		if [[ -z $lxcuser ]]; then export lxcuser="media"; fi
+		if [[ -z $lxcuid ]]; then export lxcuid="60000"; fi
+		if [[ -z $lxcgroup ]]; then export lxcgroup="media"; fi
 		if [[ -z $lxcgid ]]; then 
 			grep $lxcgroup /etc/group > /dev/null
 			if [ $? -ne 0 ]; then
-				set lxcgid="100"
+				set lxcgid="60000"
 				addgroup -g $lxcgid $lxcgroup
                 check_error $? addgroup
 			else
